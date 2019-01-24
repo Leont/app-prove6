@@ -1,0 +1,22 @@
+{
+  "auth" : "cpan:LEONT",
+  "authors" : [
+    "Leon Timmermans"
+  ],
+  "build-depends" : [ ],
+  "depends" : [
+    "TAP"
+  ],
+  "description" : "A test harness script for perl6",
+  "license" : "Artistic-2.0",
+  "name" : "App::Prove6",
+  "perl" : "6.*",
+  "provides" : {
+    "App::Prove6" : "lib/App/Prove6.pm6"
+  },
+  "resources" : [ ],
+  "source-url" : "",
+  "tags" : [ ],
+  "test-depends" : [ ],
+  "version" : "0.0.7"
+}
