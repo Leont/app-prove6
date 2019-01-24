@@ -2,3 +2,4 @@ Revision history for App-Prove6
 
 {{$NEXT}}
     - Import of prove6 from TAP::Harness
+    - Move the implementation to App::Prove6
