@@ -21,14 +21,16 @@ my sub load(Str $classname) {
 	return ::($classname);
 }
 
+use Getopt::Long;
+
 proto sub MAIN(|) is export(:MAIN) { * }
 
 multi sub MAIN(
-	Bool :l($lib), Bool :$timer, Int :j($jobs),
-	Bool :$ignore-exit, Bool :$trap, Bool :v($verbose),
+	Bool :l($lib), Bool :$timer is getopt<!>, Int :j($jobs),
+	Bool :$ignore-exit is getopt<!>, Bool :$trap, Bool :v($verbose),
 	Bool :$shuffle, Str :$err, Bool :$reverse,
-	Str :e($exec), Str :$harness, Str :$reporter, :I($incdir),
-	Bool :$loose, Bool :$color, *@files) {
+	Str :e($exec), Str :$harness, Str :$reporter, :I(@incdirs),
+	Bool :$loose, Bool :$color is getopt<!>, *@files) {
 	@files = 't' if not @files;
 	die "Invalid value '$err' for --err\n" if defined $err && $err ne any('stderr','merge','ignore');
 
@@ -37,9 +39,7 @@ multi sub MAIN(
 		%more<handlers> = ( TAP::Harness::SourceHandler::Exec.new($exec.words) );
 	}
 	else {
-		my @incdirs;
-		@incdirs.unshift($*CWD ~ '/lib') if $lib;
-		@incdirs.prepend(@$incdir) with $incdir;
+		@incdirs.push($*CWD ~ '/lib') if $lib;
 		%more<handlers> = ( TAP::Harness::SourceHandler::Perl6.new(:@incdirs) );
 	}
 	my $harness-class = $harness ?? load($harness) !! TAP::Harness;
