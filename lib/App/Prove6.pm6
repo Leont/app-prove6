@@ -34,12 +34,12 @@ multi sub MAIN(
 	@files = 't' if not @files;
 	die "Invalid value '$err' for --err\n" if defined $err && $err ne any('stderr','merge','ignore');
 
+	@incdirs.push($*CWD.add('lib')) if $lib;
 	my %more;
 	with $exec {
 		%more<handlers> = ( TAP::Harness::SourceHandler::Exec.new($exec.words) );
 	}
-	else {
-		@incdirs.push($*CWD ~ '/lib') if $lib;
+	elsif @incdirs {
 		%more<handlers> = ( TAP::Harness::SourceHandler::Perl6.new(:@incdirs) );
 	}
 	my $harness-class = $harness ?? load($harness) !! TAP::Harness;
