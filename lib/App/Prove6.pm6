@@ -26,10 +26,10 @@ use Getopt::Long;
 proto sub MAIN(|) is export(:MAIN) { * }
 
 multi sub MAIN(
-	Bool :l($lib), Bool :$timer is getopt<!>, Int :j($jobs),
-	Bool :$ignore-exit is getopt<!>, Bool :$trap, Bool :v($verbose),
+	Bool :l(:$lib), Bool :$timer is getopt<!>, Int :j(:$jobs),
+	Bool :$ignore-exit is getopt<!>, Bool :$trap, Bool :v(:$verbose) is getopt<!>,
 	Bool :$shuffle, Str :$err, Bool :$reverse,
-	Str :e($exec), Str :$harness, Str :$reporter, :I(@incdirs),
+	Str :e(:$exec), Str :$harness, Str :$reporter, :I(:incdir(@incdirs)),
 	Bool :$loose, Bool :$color is getopt<!>, *@files) {
 	@files = 't' if not @files;
 	die "Invalid value '$err' for --err\n" if defined $err && $err ne any('stderr','merge','ignore');
@@ -78,9 +78,8 @@ prove6 - Run tests through a TAP harness.
 
 Boolean options:
 
- -v,                    Print all test lines.
- -l,                    Add 'lib' to the path for your tests (-Ilib).
- -b,                    Add 'blib/lib' to the path for your tests
+ -v,  --verbose         Print all test lines.
+ -l,  --lib             Add 'lib' to the path for your tests (-Ilib).
       --shuffle         Run the tests in random order.
       --ignore-exit     Ignore exit status from test scripts.
       --reverse         Run the tests in reverse order.
@@ -91,12 +90,12 @@ Boolean options:
 
 Options that take arguments:
 
- -e,                    Interpreter to run the tests ('' for compiled
+ -e,  --exec            Interpreter to run the tests ('' for compiled
                         tests.)
       --harness         Define test harness to use.  See TAP::Harness.
       --reporter        Result reporter to use. See REPORTERS.
- -j,                    Run N test jobs in parallel (try 9.)
-      --err=stdout      Direct the test's $*ERR to the harness' $*ERR.
+ -j,  --jobs            Run N test jobs in parallel (try 9.)
+      --err=stderr      Direct the test's $*ERR to the harness' $*ERR.
       --err=merge       Merge test scripts' $*ERR with their $*OUT.
       --err=ignore      Ignore test script' $*ERR.
 
