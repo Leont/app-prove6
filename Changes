@@ -1,6 +1,7 @@
 Revision history for App-Prove6
 
 {{$NEXT}}
+    - Fail on non-existent arguments
 
 0.0.8  2019-01-26T21:28:44+01:00
     - Import of prove6 from TAP::Harness
