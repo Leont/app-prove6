@@ -33,7 +33,7 @@ multi sub MAIN(
 	Str :e(:$exec), Str :$harness, Str :$reporter, :I(:incdir(@incdirs)),
 	Bool :$loose, Bool :$color is getopt<!>, *@files) {
 	@files = 't' if not @files;
-	die "Invalid value '$err' for --err\n" if defined $err && $err ne any('stderr','merge','ignore');
+	die "Invalid value '$err' for --err\n" if defined $err && $err eq none('stderr','merge','ignore');
 
 	@incdirs.push($*CWD.add('lib')) if $lib;
 	my %more;
