@@ -64,7 +64,7 @@ multi sub MAIN(Bool :$help!) {
 	say $text;
 }
 multi sub MAIN(Bool :$version!) {
-	say "prove6 0.0.7 on $*PERL";
+	say "prove6 {App::Prove6.^ver} with TAP::Harness {TAP.^ver} on {$*PERL.compiler.gist}";
 }
 
 =begin pod
