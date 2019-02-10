@@ -91,6 +91,7 @@ Boolean options:
 
 Options that take arguments:
 
+ -I,  --incdir          Library paths to include.
  -e,  --exec            Interpreter to run the tests ('' for compiled
                         tests.)
       --harness         Define test harness to use.  See TAP::Harness.
