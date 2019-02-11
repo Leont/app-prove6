@@ -28,7 +28,8 @@ proto sub MAIN(|) is export(:MAIN) { * }
 
 multi sub MAIN(
 	Bool :l(:$lib), Bool :$timer is getopt<!>, Int :j(:$jobs),
-	Bool :$ignore-exit is getopt<!>, Bool :$trap, Bool :v(:$verbose) is getopt<!>,
+	Bool :$ignore-exit is getopt<!>, Bool :$trap,
+	Bool :v(:$verbose) is getopt<!>, Bool :q(:$quiet), Bool :Q(:$QUIET),
 	Bool :$shuffle, Str :$err, Bool :$reverse,
 	Str :e(:$exec), Str :$harness, Str :$reporter, :I(:incdir(@incdirs)),
 	Bool :$loose, Bool :$color is getopt<!>, :@ext = <t t6>, *@files) {
@@ -43,11 +44,20 @@ multi sub MAIN(
 	elsif @incdirs {
 		%more<handlers> = ( TAP::Harness::SourceHandler::Perl6.new(:@incdirs) );
 	}
+
 	my $harness-class = $harness ?? load($harness) !! TAP::Harness;
-	with $reporter {
-		%more<reporter-class> = load($reporter);
+	%more<reporter-class> = load($reporter) with $reporter;
+
+	with $verbose {
+		%more<volume> = $verbose ?? TAP::Verbose !! TAP::Normal;
 	}
-	%more<volume> = TAP::Verbose if $verbose;
+	elsif $QUIET {
+		%more<volume> = TAP::Silent;
+	}
+	elsif $quiet {
+		%more<volume> = TAP::Quiet;
+	}
+
 	my @sources = gather { listall($_.IO, @ext) for @files }
 	@sources = $shuffle ?? @sources.pick(*) !! @sources.sort;
 	@sources = @sources.reverse if $reverse;
@@ -84,6 +94,8 @@ Boolean options:
       --shuffle         Run the tests in random order.
       --ignore-exit     Ignore exit status from test scripts.
       --reverse         Run the tests in reverse order.
+ -q,  --quiet           Suppress some test output while running tests.
+ -Q,  --QUIET           Only print summary results.
       --timer           Print elapsed time after each test.
       --trap            Trap Ctrl-C and print summary on interrupt.
       --help            Display this help
