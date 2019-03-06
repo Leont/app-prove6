@@ -1,6 +1,8 @@
 Revision history for App-Prove6
 
 {{$NEXT}}
+
+0.0.10  2019-03-06T23:06:20+01:00
     - Fix check for --err argument
     - Fix version output to include prove6, TAP and perl6 version
     - Add --ext option
