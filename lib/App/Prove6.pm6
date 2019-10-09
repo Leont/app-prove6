@@ -32,7 +32,7 @@ multi sub MAIN(
 	Bool :v(:$verbose) is getopt<!>, Bool :q(:$quiet), Bool :Q(:$QUIET),
 	Bool :$shuffle, Str :$err, Bool :$reverse,
 	Str :e(:$exec), Str :$harness, Str :$reporter, :I(:incdir(@incdirs)),
-	Bool :$loose, Bool :$color is getopt<!>, :@ext = <t t6>, *@files) {
+	Bool :$loose, Bool :$color is getopt<!>, :@ext = <t rakutest t6>, *@files) {
 	@files = 't' if not @files;
 	die "Invalid value '$err' for --err\n" if defined $err && $err eq none('stderr','merge','ignore');
 
@@ -106,7 +106,7 @@ Options that take arguments:
  -I,  --incdir       Library paths to include.
  -e,  --exec         Interpreter to run the tests ('' for compiled
                      tests.)
-      --ext          Set the extensions for tests (default <t t6>)
+      --ext          Set the extensions for tests (default <t rakutest t6>)
       --harness      Define test harness to use.  See TAP::Harness.
       --reporter     Result reporter to use. See REPORTERS.
  -j,  --jobs         Run N test jobs in parallel (try 9.)
