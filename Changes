@@ -1,6 +1,7 @@
 Revision history for App-Prove6
 
 {{$NEXT}}
+    - Add support for .rakutest extension
 
 0.0.10  2019-03-06T23:06:20+01:00
     - Fix check for --err argument
