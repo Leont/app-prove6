@@ -1,5 +1,5 @@
 use v6.c;
-unit class App::Prove6:ver<0.0.11>:auth<cpan:LEONT>;
+unit class App::Prove6:ver<0.0.12>:auth<cpan:LEONT>;
 
 use TAP;
 
