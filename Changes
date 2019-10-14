@@ -1,6 +1,7 @@
 Revision history for App-Prove6
 
 {{$NEXT}}
+    - Fix TAP dependency for Raku source handler
 
 0.0.11  2019-10-14T20:24:35+02:00
     - Add support for .rakutest extension
