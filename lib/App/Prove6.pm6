@@ -42,7 +42,7 @@ multi sub MAIN(
 		%more<handlers> = ( TAP::Harness::SourceHandler::Exec.new($exec.words) );
 	}
 	elsif @incdirs {
-		%more<handlers> = ( TAP::Harness::SourceHandler::Perl6.new(:@incdirs) );
+		%more<handlers> = ( TAP::Harness::SourceHandler::Raku.new(:@incdirs) );
 	}
 
 	my $harness-class = $harness ?? load($harness) !! TAP::Harness;
