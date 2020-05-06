@@ -23,6 +23,7 @@ Boolean options:
          --trap         Trap Ctrl-C and print summary on interrupt.
          --help         Display this help
          --version      Display the version
+		 --loose        Use inconsistencies in subtests in the reort
 
 Options that take arguments:
 
