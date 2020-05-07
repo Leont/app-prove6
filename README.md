@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/Leont/app-prove6.svg?branch=master)](https://travis-ci.org/Leont/app-prove6)
+[![Build Status](https://travis-ci.com/Leont/app-prove6.svg?branch=master)](https://travis-ci.com/Leont/app-prove6)
 
 NAME
 ====
@@ -23,6 +23,7 @@ Boolean options:
          --trap         Trap Ctrl-C and print summary on interrupt.
          --help         Display this help
          --version      Display the version
+         --loose        Ignores subtests
 
 Options that take arguments:
 
