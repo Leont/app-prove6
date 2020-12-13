@@ -27,12 +27,12 @@ use Getopt::Long;
 proto sub MAIN(|) is export(:MAIN) { * }
 
 multi sub MAIN(
-	Bool :l(:$lib), Bool :$timer is getopt<!>, Int :j(:$jobs),
-	Bool :$ignore-exit is getopt<!>, Bool :$trap,
-	Bool :v(:$verbose) is getopt<!>, Bool :q(:$quiet), Bool :Q(:$QUIET),
+	Bool :l(:$lib), Bool :$timer is option<!>, Int :j(:$jobs),
+	Bool :$ignore-exit is option<!>, Bool :$trap,
+	Bool :v(:$verbose) is option<!>, Bool :q(:$quiet), Bool :Q(:$QUIET),
 	Bool :$shuffle, Str :$err, Bool :$reverse,
 	Str :e(:$exec), Str :$harness, Str :$reporter, :I(:incdir(@incdirs)),
-	Bool :$loose, Bool :$color is getopt<!>, :@ext = <t rakutest t6>, *@files) {
+	Bool :$loose, Bool :$color is option<!>, :@ext = <t rakutest t6>, *@files) {
 	@files = 't' if not @files;
 	die "Invalid value '$err' for --err\n" if defined $err && $err eq none('stderr','merge','ignore');
 
