@@ -36,33 +36,32 @@ multi sub MAIN(
 	@files = 't' if not @files;
 	die "Invalid value '$err' for --err\n" if defined $err && $err eq none('stderr','merge','ignore');
 
-	@incdirs.push($*CWD.add('lib')) if $lib;
-	my %more;
+	@incdirs.push('lib'.IO.absolute) if $lib;
+	my %args = grep *.value.defined, (:$jobs, :$timer, :$trap, :$ignore-exit, :$err, :$loose, :$color);
 	with $exec {
-		%more<handlers> = ( TAP::Harness::SourceHandler::Exec.new($exec.words) );
+		%args<handlers> = ( TAP::Harness::SourceHandler::Exec.new($exec.words) );
 	}
 	elsif @incdirs {
-		%more<handlers> = ( TAP::Harness::SourceHandler::Raku.new(:@incdirs) );
+		%args<handlers> = ( TAP::Harness::SourceHandler::Raku.new(:@incdirs) );
 	}
 
 	my $harness-class = $harness ?? load($harness) !! TAP::Harness;
-	%more<reporter-class> = load($reporter) with $reporter;
+	%args<reporter-class> = load($reporter) with $reporter;
 
 	with $verbose {
-		%more<volume> = $verbose ?? TAP::Verbose !! TAP::Normal;
+		%args<volume> = $verbose ?? TAP::Verbose !! TAP::Normal;
 	}
 	elsif $QUIET {
-		%more<volume> = TAP::Silent;
+		%args<volume> = TAP::Silent;
 	}
 	elsif $quiet {
-		%more<volume> = TAP::Quiet;
+		%args<volume> = TAP::Quiet;
 	}
 
 	my @sources = gather { listall($_.IO, @ext) for @files }
 	@sources = $shuffle ?? @sources.pick(*) !! @sources.sort;
 	@sources = @sources.reverse if $reverse;
-	my %args = grep *.value.defined, (:$jobs, :$timer, :$trap, :$ignore-exit, :$err, :$loose, :$color);
-	my $run = $harness-class.new(|%args, |%more).run(@sources);
+	my $run = $harness-class.new(|%args).run(@sources);
 	exit min($run.result.has-errors, 254);
 }
 
