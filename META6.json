@@ -5,8 +5,8 @@
   ],
   "build-depends" : [ ],
   "depends" : [
-    "TAP:ver<0.1.0+>",
-    "Getopt::Long:ver<0.3.0+>"
+    "Getopt::Long:ver<0.3.0+>",
+    "TAP:ver<0.3.4+>"
   ],
   "description" : "Run tests through a TAP harness.",
   "license" : "Artistic-2.0",

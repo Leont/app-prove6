@@ -31,37 +31,35 @@ multi sub MAIN(
 	Bool :$ignore-exit is option<!>, Bool :$trap,
 	Bool :v(:$verbose) is option<!>, Bool :q(:$quiet), Bool :Q(:$QUIET),
 	Bool :$shuffle, Str :$err, Bool :$reverse,
-	Str :e(:$exec), Str :$harness, Str :$reporter, :I(:incdir(@incdirs)),
+	Str :e(:$exec), Str :$harness, Str :$reporter, :I(:incdir(@include-dirs)),
 	Bool :$loose, Bool :$color is option<!>, :@ext = <t rakutest t6>, *@files) {
 	@files = 't' if not @files;
 	die "Invalid value '$err' for --err\n" if defined $err && $err eq none('stderr','merge','ignore');
 
-	@incdirs.push('lib'.IO.absolute) if $lib;
-	my %args = grep *.value.defined, (:$jobs, :$timer, :$trap, :$ignore-exit, :$err, :$loose, :$color);
+	@include-dirs.push('lib'.IO.absolute) if $lib;
+	my %new-args = (:$jobs, :$timer, :$trap, :$ignore-exit, :$loose, :$color).grep(*.value.defined);
+	my %run-args = (:$err, :@include-dirs).grep(*.value.defined);
 	with $exec {
-		%args<handlers> = ( TAP::Harness::SourceHandler::Exec.new($exec.words) );
-	}
-	elsif @incdirs {
-		%args<handlers> = ( TAP::Harness::SourceHandler::Raku.new(:@incdirs) );
+		%new-args<handlers> = ( TAP::Harness::SourceHandler::Exec.new($exec.words) );
 	}
 
 	my $harness-class = $harness ?? load($harness) !! TAP::Harness;
-	%args<reporter-class> = load($reporter) with $reporter;
+	%new-args<reporter-class> = load($reporter) with $reporter;
 
 	with $verbose {
-		%args<volume> = $verbose ?? TAP::Verbose !! TAP::Normal;
+		%new-args<volume> = $verbose ?? TAP::Verbose !! TAP::Normal;
 	}
 	elsif $QUIET {
-		%args<volume> = TAP::Silent;
+		%new-args<volume> = TAP::Silent;
 	}
 	elsif $quiet {
-		%args<volume> = TAP::Quiet;
+		%new-args<volume> = TAP::Quiet;
 	}
 
 	my @sources = gather { listall($_.IO, @ext) for @files }
 	@sources = $shuffle ?? @sources.pick(*) !! @sources.sort;
 	@sources = @sources.reverse if $reverse;
-	my $run = $harness-class.new(|%args).run(@sources);
+	my $run = $harness-class.new(|%new-args).run(@sources, |%run-args);
 	exit min($run.result.has-errors, 254);
 }
 
