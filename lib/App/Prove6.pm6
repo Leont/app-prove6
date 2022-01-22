@@ -26,20 +26,16 @@ multi sub MAIN(
 	@include-dirs.push('lib'.IO.absolute) if $lib;
 	my %new-args = (:$jobs, :$timer, :$trap, :$ignore-exit, :$loose, :$color).grep(*.value.defined);
 	my %run-args = (:$err, :$cwd, :@include-dirs).grep(*.value.defined);
-	with $exec {
-		%new-args<handlers> = ( TAP::Harness::SourceHandler::Exec.new($exec.words) );
-	}
+	%new-args<handlers> = ( TAP::Harness::SourceHandler::Exec.new($exec.words) ) with $exec;
 
 	my $harness-class = $harness ?? load($harness) !! TAP::Harness;
 	%new-args<reporter-class> = load($reporter) with $reporter;
 
 	with $verbose {
 		%new-args<volume> = $verbose ?? TAP::Verbose !! TAP::Normal;
-	}
-	elsif $QUIET {
+	} elsif $QUIET {
 		%new-args<volume> = TAP::Silent;
-	}
-	elsif $quiet {
+	} elsif $quiet {
 		%new-args<volume> = TAP::Quiet;
 	}
 
@@ -54,8 +50,7 @@ multi sub MAIN(Bool :$help!) {
 	require Pod::To::Text;
 	my @contents = $=pod[0].contents.grep: { $_ ~~ Pod::Heading && .contents[0].contents eq 'USAGE' ^fff^ $_ ~~ Pod::Heading };
 	my $usage-pod = Pod::Block::Named.new(:name<prove6>, :@contents);
-	my $text = ::('Pod::To::Text').render($usage-pod);
-	say $text;
+	say ::('Pod::To::Text').render($usage-pod);
 }
 multi sub MAIN(Bool :$version!) {
 	say "prove6 {App::Prove6.^ver} with TAP::Harness {TAP.^ver} on {$*PERL.compiler.gist}";
