@@ -1,19 +1,9 @@
 use v6.c;
 unit class App::Prove6:ver<0.0.12>:auth<cpan:LEONT>;
 
+use Getopt::Long;
+use Path::Finder;
 use TAP;
-
-my multi listall(IO::Path $path where .d, @exts) {
-	for $path.dir(:test(!*.starts-with('.'))).self -> $entry {
-		listall($entry, @exts);
-	}
-}
-my multi listall(IO::Path $path where .f, @exts) {
-	take ~$path if $path.extension eq any(@exts);
-}
-my multi listall(IO::Path $path, @) {
-	die "Invalid input '$path'";
-}
 
 my sub load(Str $classname) {
 	my $loaded = try ::($classname);
@@ -21,8 +11,6 @@ my sub load(Str $classname) {
 	require ::($classname);
 	return ::($classname);
 }
-
-use Getopt::Long;
 
 proto sub MAIN(|) is export(:MAIN) { * }
 
@@ -32,8 +20,7 @@ multi sub MAIN(
 	Bool :v(:$verbose) is option<!>, Bool :q(:$quiet), Bool :Q(:$QUIET),
 	Bool :$shuffle, Str :$err, Bool :$reverse,
 	Str :e(:$exec), Str :$harness, Str :$reporter, :I(:incdir(@include-dirs)),
-	Bool :$loose, Bool :$color is option<!>, :@ext = <t rakutest t6>, *@files) {
-	@files = 't' if not @files;
+	Bool :$loose, Bool :$color is option<!>, :@ext = <t rakutest t6>, *@dirs) {
 	die "Invalid value '$err' for --err\n" if defined $err && $err eq none('stderr','merge','ignore');
 
 	@include-dirs.push('lib'.IO.absolute) if $lib;
@@ -56,7 +43,7 @@ multi sub MAIN(
 		%new-args<volume> = TAP::Quiet;
 	}
 
-	my @sources = gather { listall($_.IO, @ext) for @files }
+	my @sources = find(@dirs || 't', :file, :ext(any(@ext)), :skip-hidden);
 	@sources = $shuffle ?? @sources.pick(*) !! @sources.sort;
 	@sources = @sources.reverse if $reverse;
 	my $run = $harness-class.new(|%new-args).run(@sources, |%run-args);
