@@ -18,14 +18,14 @@ multi sub MAIN(
 	Bool :l(:$lib), Bool :$timer is option<!>, Int :j(:$jobs),
 	Bool :$ignore-exit is option<!>, Bool :$trap,
 	Bool :v(:$verbose) is option<!>, Bool :q(:$quiet), Bool :Q(:$QUIET),
-	Bool :$shuffle, Str :$err, Bool :$reverse,
+	Bool :$shuffle, Bool :$reverse, Str :$err, Str :$cwd,
 	Str :e(:$exec), Str :$harness, Str :$reporter, :I(:incdir(@include-dirs)),
 	Bool :$loose, Bool :$color is option<!>, :@ext = <t rakutest t6>, *@dirs) {
 	die "Invalid value '$err' for --err\n" if defined $err && $err eq none('stderr','merge','ignore');
 
 	@include-dirs.push('lib'.IO.absolute) if $lib;
 	my %new-args = (:$jobs, :$timer, :$trap, :$ignore-exit, :$loose, :$color).grep(*.value.defined);
-	my %run-args = (:$err, :@include-dirs).grep(*.value.defined);
+	my %run-args = (:$err, :$cwd, :@include-dirs).grep(*.value.defined);
 	with $exec {
 		%new-args<handlers> = ( TAP::Harness::SourceHandler::Exec.new($exec.words) );
 	}
@@ -94,6 +94,7 @@ Options that take arguments:
       --harness      Define test harness to use.  See TAP::Harness.
       --reporter     Result reporter to use. See REPORTERS.
  -j,  --jobs         Run N test jobs in parallel (try 9.)
+      --cwd          Run in certain directory
       --err=stderr   Direct the test's $*ERR to the harness' $*ERR.
       --err=merge    Merge test scripts' $*ERR with their $*OUT.
       --err=ignore   Ignore test script' $*ERR.
