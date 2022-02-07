@@ -14,7 +14,7 @@
   "name" : "App::Prove6",
   "perl" : "6.*",
   "provides" : {
-    "App::Prove6" : "lib/App/Prove6.pm6"
+    "App::Prove6" : "lib/App/Prove6.rakumod"
   },
   "resources" : [ ],
   "source-url" : "https://github.com/Leont/app-prove6.git",
