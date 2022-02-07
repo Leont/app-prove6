@@ -53,7 +53,7 @@ multi sub MAIN(Bool :$help!) {
 	say ::('Pod::To::Text').render($usage-pod);
 }
 multi sub MAIN(Bool :$version!) {
-	say "prove6 {App::Prove6.^ver} with TAP::Harness {TAP.^ver} on {$*PERL.compiler.gist}";
+	say "prove6 {App::Prove6.^ver} with TAP {TAP.^ver} on {$*RAKU.compiler.gist}";
 }
 
 =begin pod
