@@ -15,7 +15,7 @@ my sub load(Str $classname) {
 }
 
 sub MAIN(
-	Bool :l(:$lib), Bool :$timer is option<!>, Int :j(:$jobs),
+	Bool :l(:$lib), Bool :b(:$blib), Bool :$timer is option<!>, Int :j(:$jobs),
 	Bool :$ignore-exit is option<!>, Bool :$trap,
 	Bool :v(:$verbose) is option<!>, Bool :q(:$quiet), Bool :Q(:$QUIET),
 	Bool :$shuffle, Bool :$reverse, Str :$err, IO :$cwd = $*CWD,
@@ -30,6 +30,7 @@ sub MAIN(
 		say "$*PROGRAM.basename() {App::Prove6.^ver} with TAP {TAP.^ver} on $*RAKU.compiler.gist()";
 	} else {
 		@include-dirs.push($cwd.add('lib')) if $lib;
+		@include-dirs.push($cwd.add('META6.json').e ?? $cwd !! $cwd.add('lib')) if $blib;
 		my %new-args = (:$jobs, :$timer, :$trap, :$ignore-exit, :$loose, :$color).grep(*.value.defined);
 		my %run-args = (:$err, :$cwd, :@include-dirs).grep(*.value.defined);
 		%new-args<handlers> = ( TAP::Harness::SourceHandler::Exec.new($exec.words) ) with $exec;
@@ -66,6 +67,7 @@ C<prove6 [options] [files or directories]>
 =begin table :caption('Boolean options')
 -v   --verbose      Print all test lines.
 -l   --lib          Add 'lib' to the path for your tests (-Ilib).
+-b   --blib         Add module directory to the path for your tests.
      --shuffle      Run the tests in random order.
      --ignore-exit  Ignore exit status from test scripts.
      --reverse      Run the tests in reverse order.
