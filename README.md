@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.com/Leont/app-prove6.svg?branch=master)](https://travis-ci.com/Leont/app-prove6)
+[![Build Status](https://travis-ci.org/Leont/app-prove6.svg?branch=master)](https://travis-ci.org/Leont/app-prove6)
 
 NAME
 ====
@@ -23,7 +23,6 @@ Boolean options:
          --trap         Trap Ctrl-C and print summary on interrupt.
          --help         Display this help
          --version      Display the version
-         --loose        Ignores subtests
 
 Options that take arguments:
 
@@ -34,6 +33,7 @@ Options that take arguments:
          --harness      Define test harness to use.  See TAP::Harness.
          --reporter     Result reporter to use. See REPORTERS.
     -j,  --jobs         Run N test jobs in parallel (try 9.)
+         --cwd          Run in certain directory
          --err=stderr   Direct the test's $*ERR to the harness' $*ERR.
          --err=merge    Merge test scripts' $*ERR with their $*OUT.
          --err=ignore   Ignore test script' $*ERR.
@@ -44,7 +44,7 @@ NOTES
 Default Test Directory
 ----------------------
 
-If no files or directories are supplied, `prove6` looks for all files matching the pattern `t/*.{t,rakutest}`.
+If no files or directories are supplied, `prove6` looks for all files matching the pattern `t/*.t`.
 
 Colored Test Output
 -------------------
@@ -61,7 +61,7 @@ If the tests fail `prove6` will exit with non-zero status.
 `-e`
 ----
 
-Normally you can just pass a list of Raku tests and the harness will know how to execute them. However, if your tests are not written in Raku or if you want all tests invoked exactly the same way, use the `-e` switch:
+Normally you can just pass a list of Perl 6 tests and the harness will know how to execute them. However, if your tests are not written in Perl 6 or if you want all tests invoked exactly the same way, use the `-e` switch:
 
     prove6 -e='/usr/bin/ruby -w' t/
     prove6 -e='/usr/bin/perl -Tw -mstrict -Ilib' t/
@@ -98,5 +98,5 @@ The `--trap` option will attempt to trap SIGINT (Ctrl-C) during a test run and d
 $*REPO
 ------
 
-`prove6` introduces a separation between "options passed to the raku which runs prove" and "options passed to the raku which runs tests"; this distinction is by design. Thus the raku which is running a test starts with the default `$*REPO`. Additional library directories can be added via the `RAKUDOLIB` environment variable, via -Ifoo in `PERL6OPT` or via the `-Ilib` option to `prove6`.
+`prove6` introduces a separation between "options passed to the perl which runs prove" and "options passed to the perl which runs tests"; this distinction is by design. Thus the perl which is running a test starts with the default `$*REPO`. Additional library directories can be added via the `PERL6LIB` environment variable, via -Ifoo in `PERL6OPT` or via the `-Ilib` option to `prove6`.
 
