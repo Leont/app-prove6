@@ -47,13 +47,14 @@ multi sub MAIN(
 }
 
 multi sub MAIN(Bool :$help!) {
+	my $name = $*PROGRAM.basename;
 	require Pod::To::Text;
 	my @contents = $=pod[0].contents.grep: { $_ ~~ Pod::Heading && .contents[0].contents eq 'USAGE' ^fff^ $_ ~~ Pod::Heading };
-	my $usage-pod = Pod::Block::Named.new(:name<prove6>, :@contents);
+	my $usage-pod = Pod::Block::Named.new(:$name, :@contents);
 	say ::('Pod::To::Text').render($usage-pod);
 }
 multi sub MAIN(Bool :$version!) {
-	say "prove6 {App::Prove6.^ver} with TAP {TAP.^ver} on {$*RAKU.compiler.gist}";
+	say "$*PROGRAM.basename() {App::Prove6.^ver} with TAP {TAP.^ver} on $*RAKU.compiler.gist()";
 }
 
 =begin pod
