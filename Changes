@@ -2,6 +2,7 @@ Revision history for App-Prove6
 
 {{$NEXT}}
     - use called name instead of hardcoded prove6 in output
+    - Further fix Path::Finder dependency declaration in META6.json
 
 0.0.14  2022-08-08T14:41:49+02:00
     - Fix Path::Finder dependency declaration in META6.json
