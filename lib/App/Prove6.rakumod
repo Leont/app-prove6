@@ -1,5 +1,5 @@
 use v6.c;
-unit class App::Prove6:ver<0.0.14>:auth<cpan:LEONT>;
+unit class App::Prove6:ver<0.0.15>:auth<cpan:LEONT>;
 
 use Getopt::Long;
 use Path::Finder;
