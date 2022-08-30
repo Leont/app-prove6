@@ -39,7 +39,7 @@ multi sub MAIN(
 		%new-args<volume> = TAP::Quiet;
 	}
 
-	my @sources = find(@dirs || 't', :file, :ext(any(@ext)), :skip-hidden);
+	my @sources = find(@dirs || 't', :and[ :or[ { :depth(0) }, { :ext(any(@ext)), :skip-hidden } ], :file ]);
 	@sources = $shuffle ?? @sources.pick(*) !! @sources.sort;
 	@sources = @sources.reverse if $reverse;
 	my $run = $harness-class.new(|%new-args).run(@sources, |%run-args);
