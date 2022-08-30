@@ -65,42 +65,44 @@ prove6 - Run tests through a TAP harness.
 
 =head1 USAGE
 
- prove6 [options] [files or directories]
+=begin code :lang<shell>
+prove6 [options] [files or directories]
+=end code
 
-Boolean options:
+=begin table :caption('Boolean options')
+-v   --verbose      Print all test lines.
+-l   --lib          Add 'lib' to the path for your tests (-Ilib).
+     --shuffle      Run the tests in random order.
+     --ignore-exit  Ignore exit status from test scripts.
+     --reverse      Run the tests in reverse order.
+-q   --quiet        Suppress some test output while running tests.
+-Q   --QUIET        Only print summary results.
+     --timer        Print elapsed time after each test.
+     --trap         Trap Ctrl-C and print summary on interrupt.
+     --help         Display this help
+     --version      Display the version
+=end table
 
- -v,  --verbose      Print all test lines.
- -l,  --lib          Add 'lib' to the path for your tests (-Ilib).
-      --shuffle      Run the tests in random order.
-      --ignore-exit  Ignore exit status from test scripts.
-      --reverse      Run the tests in reverse order.
- -q,  --quiet        Suppress some test output while running tests.
- -Q,  --QUIET        Only print summary results.
-      --timer        Print elapsed time after each test.
-      --trap         Trap Ctrl-C and print summary on interrupt.
-      --help         Display this help
-      --version      Display the version
-
-Options that take arguments:
-
- -I,  --incdir       Library paths to include.
- -e,  --exec         Interpreter to run the tests ('' for compiled
-                     tests.)
-      --ext          Set the extensions for tests (default <t rakutest t6>)
-      --harness      Define test harness to use.  See TAP::Harness.
-      --reporter     Result reporter to use. See REPORTERS.
- -j,  --jobs         Run N test jobs in parallel (try 9.)
-      --cwd          Run in certain directory
-      --err=stderr   Direct the test's $*ERR to the harness' $*ERR.
-      --err=merge    Merge test scripts' $*ERR with their $*OUT.
-      --err=ignore   Ignore test script' $*ERR.
+=begin table :caption('Options with arguments')
+-I   --incdir       Library paths to include.
+-e   --exec         Interpreter to run the tests ('' for compiled
+                    tests.)
+     --ext          Set the extensions for tests (default <t rakutest t6>)
+     --harness      Define test harness to use.  See TAP::Harness.
+     --reporter     Result reporter to use.
+-j   --jobs         Run N test jobs in parallel (try 9.)
+     --cwd          Run in certain directory
+     --err=stderr   Direct the test's $*ERR to the harness' $*ERR.
+     --err=merge    Merge test scripts' $*ERR with their $*OUT.
+     --err=ignore   Ignore test script' $*ERR.
+=end table
 
 =head1 NOTES
 
 =head2 Default Test Directory
 
 If no files or directories are supplied, C<prove6> looks for all files
-matching the pattern C<t/*.t>.
+matching the pattern C<*.{t,t6,rakutest}> under the directory <t>.
 
 =head2 Colored Test Output
 
@@ -116,8 +118,8 @@ If the tests fail C<prove6> will exit with non-zero status.
 
 =head2 C<-e>
 
-Normally you can just pass a list of Perl 6 tests and the harness will know how
-to execute them.  However, if your tests are not written in Perl 6 or if you
+Normally you can just pass a list of Raku tests and the harness will know how
+to execute them.  However, if your tests are not written in Raku or if you
 want all tests invoked exactly the same way, use the C<-e> switch:
 
  prove6 -e='/usr/bin/ruby -w' t/
@@ -166,12 +168,12 @@ run and display the test summary even if the run is interrupted
 
 =head2 $*REPO
 
-C<prove6> introduces a separation between "options passed to the perl which
-runs prove" and "options passed to the perl which runs tests"; this
-distinction is by design. Thus the perl which is running a test starts
+C<prove6> introduces a separation between "options passed to the raku which
+runs prove6" and "options passed to the raku which runs tests"; this
+distinction is by design. Thus the raku which is running a test starts
 with the default C<$*REPO>. Additional library directories can be added
-via the C<PERL6LIB> environment variable, via -Ifoo in C<PERL6OPT> or
-via the C<-Ilib> option to C<prove6>.
+via the C<RAKULIB> environment variable or via the C<-Ilib> option to
+C<prove6>.
 
 =end pod
 
