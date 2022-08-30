@@ -3,6 +3,7 @@ unit class App::Prove6:ver<0.0.15>:auth<cpan:LEONT>;
 
 use Getopt::Long;
 use Path::Finder;
+use Pod::Usage;
 use TAP;
 
 my sub load(Str $classname) {
@@ -47,12 +48,13 @@ multi sub MAIN(
 }
 
 multi sub MAIN(Bool :$help!) {
-	my $name = $*PROGRAM.basename;
-	require Pod::To::Text;
-	my @contents = $=pod[0].contents.grep: { $_ ~~ Pod::Heading && .contents[0].contents eq 'USAGE' ^fff^ $_ ~~ Pod::Heading };
-	my $usage-pod = Pod::Block::Named.new(:$name, :@contents);
-	say ::('Pod::To::Text').render($usage-pod);
+	say render-usage($=pod);
 }
+
+sub GENERATE-USAGE(Routine $main, |capture) is export(:MAIN) {
+	render-usage($=pod);
+}
+
 multi sub MAIN(Bool :$version!) {
 	say "$*PROGRAM.basename() {App::Prove6.^ver} with TAP {TAP.^ver} on $*RAKU.compiler.gist()";
 }
