@@ -19,12 +19,12 @@ multi sub MAIN(
 	Bool :l(:$lib), Bool :$timer is option<!>, Int :j(:$jobs),
 	Bool :$ignore-exit is option<!>, Bool :$trap,
 	Bool :v(:$verbose) is option<!>, Bool :q(:$quiet), Bool :Q(:$QUIET),
-	Bool :$shuffle, Bool :$reverse, Str :$err, Str :$cwd,
-	Str :e(:$exec), Str :$harness, Str :$reporter, :I(:incdir(@include-dirs)),
+	Bool :$shuffle, Bool :$reverse, Str :$err, IO :$cwd = $*CWD,
+	Str :e(:$exec), Str :$harness, Str :$reporter, IO :I(:incdir(@include-dirs)),
 	Bool :$loose, Bool :$color is option<!>, :@ext = <t rakutest t6>, *@dirs) {
 	die "Invalid value '$err' for --err\n" if defined $err && $err eq none('stderr','merge','ignore');
 
-	@include-dirs.push('lib'.IO.absolute) if $lib;
+	@include-dirs.push($cwd.add('lib')) if $lib;
 	my %new-args = (:$jobs, :$timer, :$trap, :$ignore-exit, :$loose, :$color).grep(*.value.defined);
 	my %run-args = (:$err, :$cwd, :@include-dirs).grep(*.value.defined);
 	%new-args<handlers> = ( TAP::Harness::SourceHandler::Exec.new($exec.words) ) with $exec;
@@ -40,7 +40,7 @@ multi sub MAIN(
 		%new-args<volume> = TAP::Quiet;
 	}
 
-	my @sources = find(@dirs || 't', :and[ :or[ { :depth(0) }, { :ext(any(@ext)), :skip-hidden } ], :file ]);
+	my @sources = find(@dirs || $cwd.add('t'), :and[ :or[ { :depth(0) }, { :ext(any(@ext)), :skip-hidden } ], :file ]);
 	@sources = $shuffle ?? @sources.pick(*) !! @sources.sort;
 	@sources = @sources.reverse if $reverse;
 	my $run = $harness-class.new(|%new-args).run(@sources, |%run-args);

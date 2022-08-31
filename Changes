@@ -2,6 +2,7 @@ Revision history for App-Prove6
 
 {{$NEXT}}
     - Always run given files if existing
+    - Use $cwd for t and lib directories
 
 0.0.15  2022-08-27T17:46:00+02:00
     - use called name instead of hardcoded prove6 in output
