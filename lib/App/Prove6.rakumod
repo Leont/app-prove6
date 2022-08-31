@@ -1,10 +1,10 @@
 use v6.c;
 unit class App::Prove6:ver<0.0.15>:auth<cpan:LEONT>;
 
-use Getopt::Long;
-use Path::Finder;
+use Getopt::Long:ver<0.3.0+>;
+use Path::Finder:ver<0.4.4+>;
 use Pod::Usage;
-use TAP;
+use TAP:ver<0.3.4+>;
 
 my sub load(Str $classname) {
 	my $loaded = try ::($classname);
