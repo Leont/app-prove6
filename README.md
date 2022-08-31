@@ -8,35 +8,23 @@ prove6 - Run tests through a TAP harness.
 USAGE
 =====
 
-    prove6 [options] [files or directories]
+```shell
+prove6 [options] [files or directories]
+```
 
-Boolean options:
+<table class="pod-table">
+<caption>Boolean options</caption>
+<tbody>
+<tr> <td>-v</td> <td>--verbose</td> <td>Print all test lines.</td> </tr> <tr> <td>-l</td> <td>--lib</td> <td>Add &#39;lib&#39; to the path for your tests (-Ilib).</td> </tr> <tr> <td></td> <td>--shuffle</td> <td>Run the tests in random order.</td> </tr> <tr> <td></td> <td>--ignore-exit</td> <td>Ignore exit status from test scripts.</td> </tr> <tr> <td></td> <td>--reverse</td> <td>Run the tests in reverse order.</td> </tr> <tr> <td>-q</td> <td>--quiet</td> <td>Suppress some test output while running tests.</td> </tr> <tr> <td>-Q</td> <td>--QUIET</td> <td>Only print summary results.</td> </tr> <tr> <td></td> <td>--timer</td> <td>Print elapsed time after each test.</td> </tr> <tr> <td></td> <td>--trap</td> <td>Trap Ctrl-C and print summary on interrupt.</td> </tr> <tr> <td></td> <td>--help</td> <td>Display this help</td> </tr> <tr> <td></td> <td>--version</td> <td>Display the version</td> </tr>
+</tbody>
+</table>
 
-    -v,  --verbose      Print all test lines.
-    -l,  --lib          Add 'lib' to the path for your tests (-Ilib).
-         --shuffle      Run the tests in random order.
-         --ignore-exit  Ignore exit status from test scripts.
-         --reverse      Run the tests in reverse order.
-    -q,  --quiet        Suppress some test output while running tests.
-    -Q,  --QUIET        Only print summary results.
-         --timer        Print elapsed time after each test.
-         --trap         Trap Ctrl-C and print summary on interrupt.
-         --help         Display this help
-         --version      Display the version
-
-Options that take arguments:
-
-    -I,  --incdir       Library paths to include.
-    -e,  --exec         Interpreter to run the tests ('' for compiled
-                        tests.)
-         --ext          Set the extensions for tests (default <t rakutest t6>)
-         --harness      Define test harness to use.  See TAP::Harness.
-         --reporter     Result reporter to use. See REPORTERS.
-    -j,  --jobs         Run N test jobs in parallel (try 9.)
-         --cwd          Run in certain directory
-         --err=stderr   Direct the test's $*ERR to the harness' $*ERR.
-         --err=merge    Merge test scripts' $*ERR with their $*OUT.
-         --err=ignore   Ignore test script' $*ERR.
+<table class="pod-table">
+<caption>Options with arguments</caption>
+<tbody>
+<tr> <td>-I</td> <td>--incdir</td> <td>Library paths to include.</td> </tr> <tr> <td>-e</td> <td>--exec</td> <td>Interpreter to run the tests (&#39;&#39; for compiled</td> </tr> <tr> <td></td> <td></td> <td>tests.)</td> </tr> <tr> <td></td> <td>--ext</td> <td>Set the extensions for tests (default &lt;t rakutest t6&gt;)</td> </tr> <tr> <td></td> <td>--harness</td> <td>Define test harness to use. See TAP::Harness.</td> </tr> <tr> <td></td> <td>--reporter</td> <td>Result reporter to use.</td> </tr> <tr> <td>-j</td> <td>--jobs</td> <td>Run N test jobs in parallel (try 9.)</td> </tr> <tr> <td></td> <td>--cwd</td> <td>Run in certain directory</td> </tr> <tr> <td></td> <td>--err=stderr</td> <td>Direct the test&#39;s $*ERR to the harness&#39; $*ERR.</td> </tr> <tr> <td></td> <td>--err=merge</td> <td>Merge test scripts&#39; $*ERR with their $*OUT.</td> </tr> <tr> <td></td> <td>--err=ignore</td> <td>Ignore test script&#39; $*ERR.</td> </tr>
+</tbody>
+</table>
 
 NOTES
 =====
@@ -44,7 +32,7 @@ NOTES
 Default Test Directory
 ----------------------
 
-If no files or directories are supplied, `prove6` looks for all files matching the pattern `t/*.t`.
+If no files or directories are supplied, `prove6` looks for all files matching the pattern `*.{t,t6,rakutest}` under the directory <t>.
 
 Colored Test Output
 -------------------
@@ -61,7 +49,7 @@ If the tests fail `prove6` will exit with non-zero status.
 `-e`
 ----
 
-Normally you can just pass a list of Perl 6 tests and the harness will know how to execute them. However, if your tests are not written in Perl 6 or if you want all tests invoked exactly the same way, use the `-e` switch:
+Normally you can just pass a list of Raku tests and the harness will know how to execute them. However, if your tests are not written in Raku or if you want all tests invoked exactly the same way, use the `-e` switch:
 
     prove6 -e='/usr/bin/ruby -w' t/
     prove6 -e='/usr/bin/perl -Tw -mstrict -Ilib' t/
@@ -98,5 +86,5 @@ The `--trap` option will attempt to trap SIGINT (Ctrl-C) during a test run and d
 $*REPO
 ------
 
-`prove6` introduces a separation between "options passed to the perl which runs prove" and "options passed to the perl which runs tests"; this distinction is by design. Thus the perl which is running a test starts with the default `$*REPO`. Additional library directories can be added via the `PERL6LIB` environment variable, via -Ifoo in `PERL6OPT` or via the `-Ilib` option to `prove6`.
+`prove6` introduces a separation between "options passed to the raku which runs prove6" and "options passed to the raku which runs tests"; this distinction is by design. Thus the raku which is running a test starts with the default `$*REPO`. Additional library directories can be added via the `RAKULIB` environment variable or via the `-Ilib` option to `prove6`.
 
