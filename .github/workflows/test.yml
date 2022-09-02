@@ -1,0 +1,12 @@
+on: [push, pull_request]
+
+jobs:
+  raku:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: Raku/setup-raku@v1
+
+      - name: Install
+        run: zef install .
+
