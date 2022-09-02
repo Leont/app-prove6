@@ -1,13 +1,6 @@
-on: [push, pull_request]
-
 jobs:
-  test:
+  raku:
     runs-on: ubuntu-latest
-    name: Execute Tests
     steps:
-    - name: Checkout
-      uses: actions/checkout@v2
-    - name: Runs tests
-      id: tests
-      uses: JJ/raku-container-action@master
-
+      - uses: actions/checkout@v3
+      - uses: Raku/setup-raku@v1  # By default, this sets up the latest rakudo
