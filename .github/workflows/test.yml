@@ -5,5 +5,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: Raku/setup-raku@v1  # By default, this sets up the latest rakudo
+      - name: Test via install
+        uses: JJ/raku-test-action@main
 
