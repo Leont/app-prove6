@@ -1,6 +1,9 @@
+on: [push, pull_request]
+
 jobs:
   raku:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - uses: Raku/setup-raku@v1  # By default, this sets up the latest rakudo
+
