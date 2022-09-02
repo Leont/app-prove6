@@ -5,6 +5,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Test via install
-        uses: JJ/raku-test-action@main
+      - uses: Raku/setup-raku@v1
+
+      - name: Install
+        run: zef install .
 
