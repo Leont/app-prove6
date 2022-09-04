@@ -67,9 +67,7 @@ prove6 - Run tests through a TAP harness.
 
 =head1 USAGE
 
-=begin code :lang<shell>
-prove6 [options] [files or directories]
-=end code
+C<prove6 [options] [files or directories]>
 
 =begin table :caption('Boolean options')
 -v   --verbose      Print all test lines.
@@ -87,16 +85,16 @@ prove6 [options] [files or directories]
 
 =begin table :caption('Options with arguments')
 -I   --incdir       Library paths to include.
--e   --exec         Interpreter to run the tests ('' for compiled
+-e   --exec         Interpreter to run the tests (C<''> for compiled
                     tests.)
-     --ext          Set the extensions for tests (default <t rakutest t6>)
+     --ext          Set the extensions for tests (default C<< <t rakutest t6> >>)
      --harness      Define test harness to use.  See TAP::Harness.
      --reporter     Result reporter to use.
 -j   --jobs         Run N test jobs in parallel (try 9.)
      --cwd          Run in certain directory
-     --err=stderr   Direct the test's $*ERR to the harness' $*ERR.
-     --err=merge    Merge test scripts' $*ERR with their $*OUT.
-     --err=ignore   Ignore test script' $*ERR.
+     --err=stderr   Direct the test's C<$*ERR> to the harness' C<$*ERR>.
+     --err=merge    Merge test scripts' C<$*ERR> with their C<$*OUT>.
+     --err=ignore   Ignore test scripts' C<$*ERR>.
 =end table
 
 =head1 NOTES
@@ -104,7 +102,7 @@ prove6 [options] [files or directories]
 =head2 Default Test Directory
 
 If no files or directories are supplied, C<prove6> looks for all files
-matching the pattern C<*.{t,t6,rakutest}> under the directory <t>.
+matching the pattern C<*.{t,t6,rakutest}> under the directory C<t>.
 
 =head2 Colored Test Output
 
@@ -143,14 +141,14 @@ C<--err=merge>
 
 If you need to make sure your diagnostics are displayed in the correct
 order relative to test results you can use the C<--err=merge> option to
-merge the test scripts' $*ERR into their $*OUT.
+merge the test scripts' C<$*ERR> into their C<$*OUT>.
 
-This guarantees that $*OUT (where the test results appear) and $*ERR
+This guarantees that C<$*OUT> (where the test results appear) and C<$*ERR>
 (where the diagnostics appear) will stay in sync. The harness will
-display any diagnostics your tests emit on $*ERR.
+display any diagnostics your tests emit on C<$*ERR>.
 
 Caveat: this is a bit of a kludge. In particular note that if anything
-that appears on $*ERR looks like a test result the test harness will
+that appears on C<$*ERR> looks like a test result the test harness will
 get confused. Use this option only if you understand the consequences
 and can live with the risk.
 
@@ -168,7 +166,7 @@ Ignore the test script' $*ERR
 The C<--trap> option will attempt to trap SIGINT (Ctrl-C) during a test
 run and display the test summary even if the run is interrupted
 
-=head2 $*REPO
+=head2 C<$*REPO>
 
 C<prove6> introduces a separation between "options passed to the raku which
 runs prove6" and "options passed to the raku which runs tests"; this
