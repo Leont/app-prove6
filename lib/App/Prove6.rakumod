@@ -93,7 +93,6 @@ C<prove6 [options] [files or directories]>
 -j   --jobs         Run N test jobs in parallel (try 9.)
      --cwd          Run in certain directory
      --err=stderr   Direct the test's C<$*ERR> to the harness' C<$*ERR>.
-     --err=merge    Merge test scripts' C<$*ERR> with their C<$*OUT>.
      --err=ignore   Ignore test scripts' C<$*ERR>.
 =end table
 
@@ -134,25 +133,6 @@ C<--err=stderr>
 Direct the test's $*ERR to the harness' $*ERR.
 
 This is the default behavior.
-=end item
-
-=begin item
-C<--err=merge>
-
-If you need to make sure your diagnostics are displayed in the correct
-order relative to test results you can use the C<--err=merge> option to
-merge the test scripts' C<$*ERR> into their C<$*OUT>.
-
-This guarantees that C<$*OUT> (where the test results appear) and C<$*ERR>
-(where the diagnostics appear) will stay in sync. The harness will
-display any diagnostics your tests emit on C<$*ERR>.
-
-Caveat: this is a bit of a kludge. In particular note that if anything
-that appears on C<$*ERR> looks like a test result the test harness will
-get confused. Use this option only if you understand the consequences
-and can live with the risk.
-
-PS: Currently not supported.
 =end item
 
 =begin item
