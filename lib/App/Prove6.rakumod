@@ -5,6 +5,7 @@ use Getopt::Long:ver<0.3.0+>;
 use Path::Finder:ver<0.4.4+>;
 use Pod::Usage;
 use TAP:ver<0.3.4+>;
+use sigpipe;
 
 my sub load(Str $classname) {
 	my $loaded = try ::($classname);

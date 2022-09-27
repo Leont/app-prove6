@@ -9,7 +9,8 @@
     "Getopt::Long:ver<0.3.0+>",
     "Path::Finder:ver<0.4.4+>",
     "Pod::Usage",
-    "TAP:ver<0.3.4+>"
+    "TAP:ver<0.3.4+>",
+    "sigpipe"
   ],
   "description": "Run tests through a TAP harness.",
   "license": "Artistic-2.0",
