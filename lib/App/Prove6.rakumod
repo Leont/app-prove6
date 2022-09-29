@@ -1,5 +1,5 @@
 use v6.c;
-unit class App::Prove6:ver<0.0.16>:auth<cpan:LEONT>;
+unit module App::Prove6:ver<0.0.16>:auth<cpan:LEONT>;
 
 use Getopt::Long:ver<0.3.0+>;
 use Path::Finder:ver<0.4.4+>;
@@ -14,50 +14,43 @@ my sub load(Str $classname) {
 	return ::($classname);
 }
 
-proto sub MAIN(|) is export(:MAIN) { * }
-
-multi sub MAIN(
+sub MAIN(
 	Bool :l(:$lib), Bool :$timer is option<!>, Int :j(:$jobs),
 	Bool :$ignore-exit is option<!>, Bool :$trap,
 	Bool :v(:$verbose) is option<!>, Bool :q(:$quiet), Bool :Q(:$QUIET),
 	Bool :$shuffle, Bool :$reverse, Str :$err, IO :$cwd = $*CWD,
 	Str :e(:$exec), Str :$harness, Str :$reporter, IO :I(:incdir(@include-dirs)),
-	Bool :$loose, Bool :$color is option<!>, :@ext = <t rakutest t6>, *@dirs) {
+	Bool :$loose, Bool :$color is option<!>, :@ext = <t rakutest t6>,
+	Bool :$help, Bool :$version, *@dirs) is export(:MAIN) {
 	die "Invalid value '$err' for --err\n" if defined $err && $err eq none('stderr','merge','ignore');
 
-	@include-dirs.push($cwd.add('lib')) if $lib;
-	my %new-args = (:$jobs, :$timer, :$trap, :$ignore-exit, :$loose, :$color).grep(*.value.defined);
-	my %run-args = (:$err, :$cwd, :@include-dirs).grep(*.value.defined);
-	%new-args<handlers> = ( TAP::Harness::SourceHandler::Exec.new($exec.words) ) with $exec;
+	if $help {
+		say render-usage($=pod);
+	} elsif $version {
+		say "$*PROGRAM.basename() {App::Prove6.^ver} with TAP {TAP.^ver} on $*RAKU.compiler.gist()";
+	} else {
+		@include-dirs.push($cwd.add('lib')) if $lib;
+		my %new-args = (:$jobs, :$timer, :$trap, :$ignore-exit, :$loose, :$color).grep(*.value.defined);
+		my %run-args = (:$err, :$cwd, :@include-dirs).grep(*.value.defined);
+		%new-args<handlers> = ( TAP::Harness::SourceHandler::Exec.new($exec.words) ) with $exec;
 
-	my $harness-class = $harness ?? load($harness) !! TAP::Harness;
-	%new-args<reporter-class> = load($reporter) with $reporter;
+		my $harness-class = $harness ?? load($harness) !! TAP::Harness;
+		%new-args<reporter-class> = load($reporter) with $reporter;
 
-	with $verbose {
-		%new-args<volume> = $verbose ?? TAP::Verbose !! TAP::Normal;
-	} elsif $QUIET {
-		%new-args<volume> = TAP::Silent;
-	} elsif $quiet {
-		%new-args<volume> = TAP::Quiet;
+		with $verbose {
+			%new-args<volume> = $verbose ?? TAP::Verbose !! TAP::Normal;
+		} elsif $QUIET {
+			%new-args<volume> = TAP::Silent;
+		} elsif $quiet {
+			%new-args<volume> = TAP::Quiet;
+		}
+
+		my @sources = find(@dirs || $cwd.add('t'), :and[ :or[ { :depth(0) }, { :ext(any(@ext)), :skip-hidden } ], :file ]);
+		@sources = $shuffle ?? @sources.pick(*) !! @sources.sort;
+		@sources = @sources.reverse if $reverse;
+		my $run = $harness-class.new(|%new-args).run(@sources, |%run-args);
+		exit min($run.result.has-errors, 254);
 	}
-
-	my @sources = find(@dirs || $cwd.add('t'), :and[ :or[ { :depth(0) }, { :ext(any(@ext)), :skip-hidden } ], :file ]);
-	@sources = $shuffle ?? @sources.pick(*) !! @sources.sort;
-	@sources = @sources.reverse if $reverse;
-	my $run = $harness-class.new(|%new-args).run(@sources, |%run-args);
-	exit min($run.result.has-errors, 254);
-}
-
-multi sub MAIN(Bool :$help!) {
-	say render-usage($=pod);
-}
-
-sub GENERATE-USAGE(Routine $main, |capture) is export(:MAIN) {
-	render-usage($=pod);
-}
-
-multi sub MAIN(Bool :$version!) {
-	say "$*PROGRAM.basename() {App::Prove6.^ver} with TAP {TAP.^ver} on $*RAKU.compiler.gist()";
 }
 
 =begin pod
