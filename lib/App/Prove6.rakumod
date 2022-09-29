@@ -86,15 +86,14 @@ C<prove6 [options] [files or directories]>
 
 =begin table :caption('Options with arguments')
 -I   --incdir       Library paths to include.
--e   --exec         Interpreter to run the tests (C<''> for compiled
-                    tests.)
-     --ext          Set the extensions for tests (default C<< <t rakutest t6> >>)
-     --harness      Define test harness to use.  See TAP::Harness.
+-e   --exec         Interpreter to run the tests ('' for compiled tests.)
+     --ext          Set the extensions for tests (default <t rakutest t6>)
+     --harness      Define test harness to use. See TAP::Harness.
      --reporter     Result reporter to use.
 -j   --jobs         Run N test jobs in parallel (try 9.)
      --cwd          Run in certain directory
-     --err=stderr   Direct the test's C<$*ERR> to the harness' C<$*ERR>.
-     --err=ignore   Ignore test scripts' C<$*ERR>.
+     --err=stderr   Direct the test's $*ERR to the harness' $*ERR.
+     --err=ignore   Ignore test scripts' $*ERR.
 =end table
 
 =head1 NOTES
