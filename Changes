@@ -1,6 +1,8 @@
 Revision history for App-Prove6
 
 {{$NEXT}}
+
+0.0.17  2022-10-02T14:37:31+02:00
     - Use sigpipe for better piping support
     - Don't use multi-dispatch on MAIN
 
