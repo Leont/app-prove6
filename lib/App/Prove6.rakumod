@@ -18,7 +18,7 @@ sub MAIN(
 	Bool :l(:$lib), Bool :b(:$blib), Bool :$timer is option<!>, Int :j(:$jobs),
 	Bool :$ignore-exit is option<!>, Bool :$trap,
 	Bool :v(:$verbose) is option<!>, Bool :q(:$quiet), Bool :Q(:$QUIET),
-	Bool :$shuffle, Bool :$reverse, Str :$err, IO :$cwd = $*CWD,
+	Bool :$shuffle, Bool :$reverse, Str :$err = 'stderr', IO :$cwd = $*CWD,
 	Str :e(:$exec), Str :$harness, Str :$reporter, IO :I(:incdir(@include-dirs)),
 	Bool :$loose, Bool :$color is option<!>, :@ext = <t rakutest t6>,
 	Bool :$help, Bool :$version, *@dirs) is export(:MAIN) {
@@ -32,7 +32,7 @@ sub MAIN(
 		@include-dirs.push($cwd.add('lib')) if $lib;
 		@include-dirs.push($cwd.add('META6.json').e ?? $cwd !! $cwd.add('lib')) if $blib;
 		my %new-args = (:$jobs, :$timer, :$trap, :$ignore-exit, :$loose, :$color).grep(*.value.defined);
-		my %run-args = (:$err, :$cwd, :@include-dirs).grep(*.value.defined);
+		my %run-args = :$err, :$cwd, :@include-dirs;
 		%new-args<handlers> = ( TAP::SourceHandler::Exec.new($exec.words) ) with $exec;
 
 		my $harness-class = $harness ?? load($harness) !! TAP::Harness;
