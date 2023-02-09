@@ -33,7 +33,7 @@ sub MAIN(
 		@include-dirs.push($cwd.add('META6.json').e ?? $cwd !! $cwd.add('lib')) if $blib;
 		my %new-args = (:$jobs, :$timer, :$trap, :$ignore-exit, :$loose, :$color).grep(*.value.defined);
 		my %run-args = (:$err, :$cwd, :@include-dirs).grep(*.value.defined);
-		%new-args<handlers> = ( TAP::Harness::SourceHandler::Exec.new($exec.words) ) with $exec;
+		%new-args<handlers> = ( TAP::SourceHandler::Exec.new($exec.words) ) with $exec;
 
 		my $harness-class = $harness ?? load($harness) !! TAP::Harness;
 		%new-args<reporter-class> = load($reporter) with $reporter;
