@@ -21,7 +21,7 @@ sub MAIN(
 	Bool :$shuffle, Bool :$reverse, Str :$err = 'stderr', IO :$cwd = $*CWD,
 	Str :e(:$exec), Str :$harness, Str :$reporter, IO :I(:incdir(@include-dirs)),
 	Bool :$loose, Bool :$color is option<!>, :@ext = <t rakutest t6>,
-	Bool :$help, Bool :$version, *@dirs) is export(:MAIN) {
+	Bool :$help, Bool :$version, *@dirs) is export(:MAIN) is getopt {
 	die "Invalid value '$err' for --err\n" if defined $err && $err eq none('stderr','merge','ignore');
 
 	if $help {
