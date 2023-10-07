@@ -19,5 +19,5 @@ jobs:
         with:
           raku-version: ${{ matrix.raku-version }}
       - name: Install
-        run: zef --verbose install .
+        run: zef --debug install .
 
